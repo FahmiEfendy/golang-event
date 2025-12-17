@@ -3,10 +3,15 @@ package main
 import (
 	"net/http"
 
+	"example.com/event/db"
+	"example.com/event/routes"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	// Initialize database
+	db.InitDB()
+
 	// Setup engine (configure HTTP server)
 	server := gin.Default()
 
@@ -16,6 +21,8 @@ func main() {
 			"message": "Successfully connected to the server",
 		})
 	})
+
+	routes.RegisterRoutes(server)
 
 	// Start server on localhost:8080
 	server.Run(":8080")
