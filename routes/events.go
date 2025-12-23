@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -60,9 +61,12 @@ func createEvent(context *gin.Context) {
 		return
 	}
 
+	// Retrieve userId from request context (set earlier by auth middleware)
+	userId := context.GetInt64("userId")
+
 	// Dummy assignment of ID and UserID
 	newEvent.ID = 1
-	newEvent.UserID = 1
+	newEvent.UserID = userId
 
 	err = newEvent.Save()
 	if err != nil {
@@ -90,11 +94,21 @@ func updateEvent(context *gin.Context) {
 	}
 
 	// Check if the event exists
-	_, err = models.GetEventByID(eventId)
+	userId := context.GetInt64("userId")
+	event, err := models.GetEventByID(eventId)
 	if err != nil {
 		context.JSON(http.StatusNotFound, gin.H{
 			"message": "Event not found",
 			"error":   err.Error(),
+		})
+		return
+	}
+
+	// Event only can be updated by event creator
+	if event.UserID != userId {
+		context.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Not authorized to update event",
+			"error":   errors.New("not authorized to update event"),
 		})
 		return
 	}
@@ -111,6 +125,7 @@ func updateEvent(context *gin.Context) {
 	}
 
 	updatedEvent.ID = eventId
+	updatedEvent.UserID = userId
 
 	err = updatedEvent.Update()
 	if err != nil {
@@ -143,6 +158,17 @@ func deleteEvent(context *gin.Context) {
 		context.JSON(http.StatusNotFound, gin.H{
 			"message": "Event not found",
 			"error":   err.Error(),
+		})
+		return
+	}
+
+	userId := context.GetInt64("userId")
+
+	// Event only can be deleted by event creator
+	if event.UserID != userId {
+		context.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Not authorized to delete event",
+			"error":   errors.New("not authorized to delete event"),
 		})
 		return
 	}

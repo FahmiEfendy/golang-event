@@ -30,15 +30,22 @@ func (u User) Save() error {
 		return err
 	}
 
-	_, err = stmt.Exec(u.Email, hashedPassword)
+	result, err := stmt.Exec(u.Email, hashedPassword)
 	if err != nil {
 		return err
 	}
 
-	return nil
+	userId, err := result.LastInsertId()
+	if err != nil {
+		return err
+	}
+
+	u.ID = userId
+
+	return err
 }
 
-func (u User) ValidateCredentials() error {
+func (u *User) ValidateCredentials() error {
 	query := `
 		SELECT id, password FROM users WHERE email = ?
 	`

@@ -34,7 +34,7 @@ func signUp(context *gin.Context) {
 }
 
 func login(context *gin.Context) {
-	var user *models.User
+	var user models.User
 
 	err := context.ShouldBindJSON(&user)
 	if err != nil {
