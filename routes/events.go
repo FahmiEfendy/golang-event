@@ -29,7 +29,7 @@ func getEventById(context *gin.Context) {
 	eventId, err := strconv.ParseInt(context.Param("eventId"), 10, 64)
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{
-			"message": "Invalid event ID",
+			"message": "Could not parse event id",
 			"error":   err.Error(),
 		})
 		return
