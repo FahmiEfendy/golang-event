@@ -1,0 +1,7 @@
+DELETE http://localhost:8080/event/2
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20iLCJleHAiOjE3NjY1NDgwMjYsInVzZXJJZCI6MX0.qYUw_wJ6BvhfJGLx5eUnwsPsI7hHOaI48N09k3icG8c
+
+### Sample Success Response (200)
+# {
+#   "message": "Event deleted successfully"
+# }

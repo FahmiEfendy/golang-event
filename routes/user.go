@@ -8,6 +8,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type UserResponse struct {
+	ID    int64  `json:"id"`
+	Email string `json:"email"`
+}
+
 func signUp(context *gin.Context) {
 	var user models.User
 
@@ -29,7 +34,10 @@ func signUp(context *gin.Context) {
 
 	context.JSON(http.StatusCreated, gin.H{
 		"message": "User created successfully",
-		"data":    user,
+		"data": UserResponse{
+			ID:    user.ID,
+			Email: user.Email,
+		},
 	})
 }
 

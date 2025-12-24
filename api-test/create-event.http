@@ -1,0 +1,23 @@
+POST http://localhost:8080/event
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20iLCJleHAiOjE3NjY1NDgwMjYsInVzZXJJZCI6MX0.qYUw_wJ6BvhfJGLx5eUnwsPsI7hHOaI48N09k3icG8c
+
+{
+  "name": "Go Workshop Jakarta",
+  "description": "A beginner-friendly workshop covering Go fundamentals and best practices.",
+  "location": "Jakarta",
+  "dateTime": "2025-12-16T09:00:00+07:00"
+}
+
+### Sample Success Response (201)
+# {
+#   "data": {
+#     "ID": 1,
+#     "Name": "Go Workshop Jakarta",
+#     "Description": "A beginner-friendly workshop covering Go fundamentals and best practices.",
+#     "Location": "Jakarta",
+#     "DateTime": "2025-12-16T09:00:00+07:00",
+#     "UserID": 1
+#   },
+#   "message": "Event created successfully"
+# }

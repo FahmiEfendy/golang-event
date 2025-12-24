@@ -1,0 +1,16 @@
+POST http://localhost:8080/user/signup
+Content-Type: application/json
+
+{
+    "email": "johndoe@example.com",
+    "password": "johndoe123"
+}
+
+### Sample Success Response (201)
+# {
+#   "data": {
+#     "id": 1,
+#     "email": "johndoe@example.com"
+#   },
+#   "message": "User created successfully"
+# }

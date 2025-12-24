@@ -61,8 +61,8 @@ func createTables() {
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		event_id INTEGER,
 		user_id INTEGER,
-		FOREIGN_KEY(event_id) INTEGER REFERENCES events(id),
-		FOREIGN_KEY(user_id) INTEGER REFERENCES users(id)
+		FOREIGN KEY(event_id) REFERENCES events(id),
+		FOREIGN KEY(user_id) REFERENCES users(id)
 	)
 	`
 

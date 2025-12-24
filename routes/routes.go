@@ -22,10 +22,10 @@ func RegisterRoutes(server *gin.Engine) {
 	server.DELETE("/event/:eventId", middlewares.Authenticate, deleteEvent)
 
 	// Register Event
-	server.POST("/event/:id/register", registerEvent)
+	server.POST("/event/:eventId/register", registerEvent)
 
 	// Unregister Event
-	server.DELETE("/event/:id/unregister", unregisterEvent)
+	server.DELETE("/event/:eventId/unregister", unregisterEvent)
 
 	// Sign Up User
 	server.POST("/user/signup", signUp)

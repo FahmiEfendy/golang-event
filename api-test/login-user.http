@@ -1,0 +1,13 @@
+POST http://localhost:8080/user/login
+Content-Type: application/json
+
+{
+    "email": "johndoe@example.com",
+    "password": "johndoe123"
+}
+
+### Sample Success Response (200)
+# {
+#   "message": "Login successful",
+#   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20iLCJleHAiOjE3NjY1NDgwMjYsInVzZXJJZCI6MX0.qYUw_wJ6BvhfJGLx5eUnwsPsI7hHOaI48N09k3icG8c"
+# }

@@ -1,0 +1,7 @@
+POST http://localhost:8080/event/1/register
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImphbmVkb2VAZXhhbXBsZS5jb20iLCJleHAiOjE3NjY1NDg1NzMsInVzZXJJZCI6Mn0.z6nzGpVmhQNeVVLiSkFxGyzjgeVGEEMN8-W88XylzhE
+
+### Sample Success Response (201)
+# {
+#   "message": "Sucessfully register to event"
+# }
