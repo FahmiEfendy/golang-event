@@ -3,8 +3,8 @@ package routes
 import (
 	"net/http"
 
+	"example.com/event/handlers"
 	"example.com/event/models"
-	"example.com/event/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,7 +24,7 @@ func signUp(context *gin.Context) {
 		return
 	}
 
-	err = user.Save()
+	err = handlers.SaveUser(&user)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Could not create user",
@@ -52,7 +52,7 @@ func login(context *gin.Context) {
 		return
 	}
 
-	err = user.ValidateCredentials()
+	err = handlers.ValidateCredentials(&user)
 	if err != nil {
 		context.JSON(http.StatusUnauthorized, gin.H{
 			"message": "Could not authenticate user",
@@ -61,7 +61,8 @@ func login(context *gin.Context) {
 		return
 	}
 
-	token, err := utils.GenerateToken(user.Email, user.ID)
+	token, err := handlers.GenerateToken(user.Email, user.ID)
+
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Could not generate token",
