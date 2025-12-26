@@ -1,16 +1,16 @@
 package routes
 
 import (
-	"errors"
 	"net/http"
 	"strconv"
 
+	"example.com/event/handlers"
 	"example.com/event/models"
 	"github.com/gin-gonic/gin"
 )
 
 func getEvents(context *gin.Context) {
-	events, err := models.GetAllEvents()
+	events, err := handlers.GetAllEvents()
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Could not retrieve events",
@@ -35,7 +35,7 @@ func getEventById(context *gin.Context) {
 		return
 	}
 
-	event, err := models.GetEventByID(eventId)
+	event, err := handlers.GetEventByID(eventId)
 	if err != nil {
 		context.JSON(http.StatusNotFound, gin.H{
 			"message": "Event not found",
@@ -64,11 +64,9 @@ func createEvent(context *gin.Context) {
 	// Retrieve userId from request context (set earlier by auth middleware)
 	userId := context.GetInt64("userId")
 
-	// Dummy assignment of ID and UserID
-	newEvent.ID = 1
 	newEvent.UserID = userId
 
-	err = newEvent.Save()
+	err = handlers.CreateEvent(&newEvent)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Could not save event",
@@ -93,28 +91,7 @@ func updateEvent(context *gin.Context) {
 		return
 	}
 
-	// Check if the event exists
-	userId := context.GetInt64("userId")
-	event, err := models.GetEventByID(eventId)
-	if err != nil {
-		context.JSON(http.StatusNotFound, gin.H{
-			"message": "Event not found",
-			"error":   err.Error(),
-		})
-		return
-	}
-
-	// Event only can be updated by event creator
-	if event.UserID != userId {
-		context.JSON(http.StatusUnauthorized, gin.H{
-			"message": "Not authorized to update event",
-			"error":   errors.New("not authorized to update event"),
-		})
-		return
-	}
-
 	var updatedEvent models.Event
-
 	err = context.ShouldBindJSON(&updatedEvent)
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{
@@ -124,10 +101,30 @@ func updateEvent(context *gin.Context) {
 		return
 	}
 
+	// Check if the event exists
+	event, err := handlers.GetEventByID(eventId)
+	if err != nil {
+		context.JSON(http.StatusNotFound, gin.H{
+			"message": "Event not found",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	// Event only can be updated by event creator
+	userId := context.GetInt64("userId")
+	if event.UserID != userId {
+		context.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Not authorized to update event",
+			"error":   "not authorized to update event",
+		})
+		return
+	}
+
 	updatedEvent.ID = eventId
 	updatedEvent.UserID = userId
 
-	err = updatedEvent.Update()
+	err = handlers.UpdateEvent(&updatedEvent)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Could not update event",
@@ -153,7 +150,7 @@ func deleteEvent(context *gin.Context) {
 	}
 
 	// Check if the event exists
-	event, err := models.GetEventByID(eventId)
+	event, err := handlers.GetEventByID(eventId)
 	if err != nil {
 		context.JSON(http.StatusNotFound, gin.H{
 			"message": "Event not found",
@@ -168,12 +165,12 @@ func deleteEvent(context *gin.Context) {
 	if event.UserID != userId {
 		context.JSON(http.StatusUnauthorized, gin.H{
 			"message": "Not authorized to delete event",
-			"error":   errors.New("not authorized to delete event"),
+			"error":   "not authorized to delete event",
 		})
 		return
 	}
 
-	err = event.Delete()
+	err = handlers.DeleteEvent(event)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Could not delete event",

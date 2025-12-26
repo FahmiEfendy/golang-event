@@ -10,12 +10,8 @@ import (
 
 	"example.com/event/handlers"
 	"example.com/event/models"
-	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
-
-const LOGIN_PATH = "/login"
-const SIGNUP_PATH = "/signup"
 
 var signUpPayload = map[string]string{
 	"email":    "test@example.com",
@@ -25,27 +21,6 @@ var signUpPayload = map[string]string{
 var loginPayload = map[string]string{
 	"email":    "test@example.com",
 	"password": "password123",
-}
-
-// convert []byte (payload) to JSON
-func toJSON(t *testing.T, v any) *bytes.Buffer {
-	b, err := json.Marshal(v)
-	assert.NoError(t, err)
-	return bytes.NewBuffer(b)
-}
-
-// creates and returns a Gin HTTP router that is configured specifically for tests
-func setupRouter() *gin.Engine {
-	// indicate doing test mode
-	gin.SetMode(gin.TestMode)
-
-	r := gin.Default()
-
-	// define user routes
-	r.POST(SIGNUP_PATH, signUp)
-	r.POST(LOGIN_PATH, login)
-
-	return r
 }
 
 func TestSignUp_Success(t *testing.T) {

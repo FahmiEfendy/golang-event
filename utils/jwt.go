@@ -19,7 +19,7 @@ func GenerateToken(email string, userId int64) (string, error) {
 	return token.SignedString(secretKey)
 }
 
-func VerifyToken(token string) (int64, error) {
+var VerifyToken = func(token string) (int64, error) {
 	parsedToken, err := jwt.Parse(token, func(token *jwt.Token) (any, error) {
 		// Ensure token uses HMAC signing method
 		_, ok := token.Method.(*jwt.SigningMethodHMAC)

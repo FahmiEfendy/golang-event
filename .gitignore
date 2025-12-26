@@ -1,0 +1,6 @@
+# Go debug binaries
+__debug_bin.exe
+__debug_bin*
+
+# Go test coverage
+coverage
